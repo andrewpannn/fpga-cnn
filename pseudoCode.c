@@ -9,7 +9,7 @@ int N; // num of input layers
 for ( i=0; i<K; i++ ) {
     for ( j=0; j<K; j++) {
         for (trr=row; trr<min(row+Tr,R); trr++) {
-            for (tcc=col; tcc<min(col+Tc,C); tcc++) {
+            for (tcc=col; tcc<min(col+Tc,C); tcc++) { // this one is pipelined
                 // PIPELINE 
                 for (too=to; too<min(to+Tm, M); too++) {
                     // UNROLL in parallel

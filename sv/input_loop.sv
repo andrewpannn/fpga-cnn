@@ -35,7 +35,7 @@ module input_loop_testbench();
     shortreal weights_i, fm_i [1:0];
     shortreal fm_init_i, fm_o;
 
-    input_loop dut #(Tn_p=2) (fm_i, weights_i, fm_init_i, fm_o);
+    input_loop dut #(.Tn_p( 2 )) (fm_i, weights_i, fm_init_i, fm_o);
 
     initial begin
         weights_i[1] = 10; weights_i[0] = 5;
