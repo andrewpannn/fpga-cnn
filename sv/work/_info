@@ -10,15 +10,15 @@ cModel Technology
 Z0 dD:/fpga-cnn/sv
 vinput_loop
 Z1 DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
-Z2 !s110 1739853093
+Z2 !s110 1739857978
 !i10b 1
-!s100 ?]8BNf8]1TV`JziX7iS873
-I@TGN1HOf55UoWR:L;0JoH2
+!s100 bUFS?k7k[L:HL>FBIcTNz2
+In`l_i7PNDk;T1@gdN9XlK0
 Z3 VDg1SIo80bB@j0V0VzS_@n1
 Z4 !s105 input_loop_sv_unit
 S1
 R0
-Z5 w1739853045
+Z5 w1739857919
 Z6 8./input_loop.sv
 Z7 F./input_loop.sv
 L0 6
@@ -26,7 +26,7 @@ Z8 OV;L;10.5b;63
 r1
 !s85 0
 31
-Z9 !s108 1739853093.000000
+Z9 !s108 1739857978.000000
 Z10 !s107 ./output_loop.sv|./input_loop.sv|
 Z11 !s90 -reportprogress|300|-work|work|./input_loop.sv|./output_loop.sv|
 !i113 1
@@ -36,8 +36,8 @@ vinput_loop_testbench
 R1
 R2
 !i10b 1
-!s100 a<EGz:aLRM4Pofz6Uzj1n0
-Ije]CX3UdhdS>6:RS2=nWl2
+!s100 k4:20[k1B;9O@_?:dKem81
+IBZ>Sj`]]0@9SeT]MUGM9^3
 R3
 R4
 S1
@@ -45,7 +45,7 @@ R0
 R5
 R6
 R7
-L0 33
+L0 35
 R8
 r1
 !s85 0
@@ -60,16 +60,40 @@ voutput_loop
 R1
 R2
 !i10b 1
-!s100 PlQSOfdzoRj]@cQWkfS^n3
-I33?YS5Z[iHI3N<H?`zA1`0
+!s100 <chDoQNfBo4Z80kDZ1@Lk3
+IgYhb2[Ng1;oTci16QoE141
 R3
-!s105 output_loop_sv_unit
+Z14 !s105 output_loop_sv_unit
 S1
 R0
-w1739851460
-8./output_loop.sv
-F./output_loop.sv
+Z15 w1739857975
+Z16 8./output_loop.sv
+Z17 F./output_loop.sv
 L0 5
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 1
+R12
+R13
+voutput_loop_testbench
+R1
+R2
+!i10b 1
+!s100 Ga_>dW=HU3IlEedSmObP61
+I?m<U6c>T[aSMXJkW6?5Q=1
+R3
+R14
+S1
+R0
+R15
+R16
+R17
+L0 26
 R8
 r1
 !s85 0
