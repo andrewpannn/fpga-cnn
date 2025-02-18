@@ -14,15 +14,19 @@ module cnn
     ,output shortreal fm_o[M_p][R_p][C_p]
     );
 
-    int too, tii, trr, tcc;
+    int row, col;
     int i, j;
 
     shortreal weights_lo[Tm_p][Tn_p]; // fed into outloop
-    shortreal fm_lo[Tm_p][Tn_p]; 
+    shortreal fm_lo[Tn_p]; 
 
     assign fm_lo[0] = {tii, tii+1, tii+2, tii+3};
     assign fm_lo[1]
 
+    module #(.Tm_p( Tm_p ), Tn_p( Tn_p ))
+        loop 
+        (.weights_i
+        ,.fm_i)
 
 
 endmodule
