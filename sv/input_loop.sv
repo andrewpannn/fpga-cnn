@@ -23,7 +23,7 @@ module input_loop
     always_comb begin
         sum = 0;
         for (int j = 0; j < Tn_p; j++) begin
-            sum += activation[i];
+            sum += activation[j];
         end
     end
 
@@ -32,15 +32,29 @@ endmodule
 
 module input_loop_testbench();
     // Tn_p = 2
-    shortreal weights_i, fm_i [1:0];
+    shortreal weights_i[2];
+    shortreal fm_i[2];
     shortreal fm_init_i, fm_o;
 
-    input_loop dut #(.Tn_p( 2 )) (fm_i, weights_i, fm_init_i, fm_o);
+    input_loop #(.Tn_p( 2 )) dut
+        (.fm_i( fm_i )
+        ,.weights_i( weights_i )
+        ,.fm_init_i( fm_init_i )
+        ,.fm_o( fm_o )
+        );
 
     initial begin
-        weights_i[1] = 10; weights_i[0] = 5;
+        weights_i[1] = 10; weights_i[0] = 10;
         fm_i[0] = 20; fm_i[1] = 5;
         fm_init_i = 0; 
+        #10
+        weights_i[1] = 10; weights_i[0] = 10;
+        fm_i[0] = 20; fm_i[1] = 5;
+        fm_init_i = 1.54;
+        #10
+        weights_i[1] = 0; weights_i[0] = 5;
+        fm_i[0] = 1.72; fm_i[1] = 7.2;
+        fm_init_i = 0;1
         #10
         $stop;
     end
