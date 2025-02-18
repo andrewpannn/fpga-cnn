@@ -21,7 +21,7 @@ module cnn
     int i, j;
     logic pulse_j, pulse_i, pulse_ti, pulse_to, pulse_col, pulse_row;
 
-    cnn_counter (.max_p( K_p ), .stride_p ( 1 ))
+    cnn_counter #(.max_p( K_p ), .stride_p ( 1 ))
         j_counter
         (.reset_i(reset_i)
         ,.clk_i(clk_i)
@@ -30,7 +30,7 @@ module cnn
         ,.it_o(j)
         );
     
-    cnn_counter (.max_p( K_p ), .stride_p ( 1 ))
+    cnn_counter #(.max_p( K_p ), .stride_p ( 1 ))
         i_counter
         (.reset_i(reset_i)
         ,.clk_i(clk_i)
@@ -39,25 +39,25 @@ module cnn
         ,.it_o(i)
         );
     
-    cnn_counter (.max_p( N_p ), .stride_p ( Tn_p ))
+    cnn_counter #(.max_p( N_p ), .stride_p ( Tn_p ))
         ti_counter
         (.reset_i(reset_i)
         ,.clk_i(clk_i)
         ,.en_i(pulse_i)
         ,.pulse_o(pulse_ti)
-        ,.it_o(i)
-        )
+        ,.it_o(ti)
+        );
     
-    cnn_counter (.max_p( M_p ), .stride_p ( Tm_p ))
+    cnn_counter #(.max_p( M_p ), .stride_p ( Tm_p ))
         to_counter
         (.reset_i(reset_i)
         ,.clk_i(clk_i)
         ,.en_i(pulse_ti)
         ,.pulse_o(pulse_to)
-        ,.it_o(i)
-        )
+        ,.it_o(to)
+        );
     
-    cnn_counter (.max_p( C_p ), .stride_p ( 1 ))
+    cnn_counter #(.max_p( C_p ), .stride_p ( 1 ))
         col_counter
         (.reset_i(reset_i)
         ,.clk_i(clk_i)
@@ -66,7 +66,7 @@ module cnn
         ,.it_o(col)
         );
     
-    cnn_counter (.max_p( R_p ), .stride_p ( 1 ))
+    cnn_counter #(.max_p( R_p ), .stride_p ( 1 ))
         row_counter
         (.reset_i(reset_i)
         ,.clk_i(clk_i)
@@ -75,6 +75,7 @@ module cnn
         ,.it_o(row)
         );
 
+    /*
     // ******** DATAPATH ********
     shortreal weights_lo[Tm_p][Tn_p]; // fed into outloop
     shortreal fm_lo[Tn_p]; 
@@ -90,7 +91,7 @@ module cnn
     endgenerate
 
     // generate vector for weights_lo
-    /*
+    
     genvar x;
     generate
         for (x = 0; x < Tm_p; x++) begin
@@ -99,7 +100,6 @@ module cnn
             end
         end
     endgenerate
-    */
 
     output_loop #(.Tm_p( Tm_p ), Tn_p( Tn_p ))
         loop 
@@ -126,5 +126,5 @@ module cnn
     endgenerate
     
     assign fm_o = fm_reg_o;
-
+    */
 endmodule

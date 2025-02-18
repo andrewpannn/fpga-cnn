@@ -11,33 +11,39 @@ module cnn_counter #(parameter max_p= 4, parameter stride_p = 1)
     );
 
     int it_n;
-    logic pulse_n;
+    //logic pulse_n;
 
     //advance if en_i is detected, reset back to zero if exceeds max
 
     always_comb begin
         it_n = it_o;
-        pulse_n = 0;
+        //pulse_n = 0;
         if (en_i) begin
-            if (it_o == max_p - 1) begin
-                pulse_n = 1;
+            if (it_o >= (max_p - stride_p)) begin
+                //pulse_n = 0;
                 it_n = 0;
             end
             else begin
-                pulse_n = 0;
                 it_n = it_o + stride_p;
+                /*if (it_o + stride_p >= (max_p - stride_p)) begin
+                    pulse_n = 1;
+                end else begin
+                    pulse_n = 0;
+                end */
             end
         end
     end
 
+    assign pulse_o = (( it_o >= (max_p - stride_p) ) & en_i);
+
     always_ff @(posedge clk_i) begin
         if (reset_i) begin
             it_o <= 0;
-            pulse_o <= 0;
+            //pulse_o <= 0;
         end
         else begin
             it_o <= it_n;
-            pulse_o <= pulse_n;
+            //pulse_o <= pulse_n;
         end
     end
 
