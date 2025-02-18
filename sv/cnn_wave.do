@@ -1,10 +1,11 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
+add wave -noupdate /cnn_testbench/clk_i
+add wave -noupdate /cnn_testbench/reset_i
+add wave -noupdate /cnn_testbench/dut/state_p
 add wave -noupdate /cnn_testbench/fm_i
 add wave -noupdate /cnn_testbench/weights_i
 add wave -noupdate /cnn_testbench/fm_o
-add wave -noupdate /cnn_testbench/clk_i
-add wave -noupdate /cnn_testbench/reset_i
 add wave -noupdate /cnn_testbench/dut/row
 add wave -noupdate /cnn_testbench/dut/col
 add wave -noupdate /cnn_testbench/dut/to
@@ -28,4 +29,4 @@ configure wave -griddelta 2
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {1 ns}
+WaveRestoreZoom {99500 ps} {100500 ps}

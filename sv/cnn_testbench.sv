@@ -1,5 +1,5 @@
 module cnn_testbench ();
-    parameter N_p=4, M_p=4, K_p=2, R_p=16, C_p=16, S_p=1, Tn_p=2, Tm_p=2;
+    parameter N_p=4, M_p=4, K_p=2, R_p=4, C_p=4, S_p=1, Tn_p=2, Tm_p=2;
 
     shortreal fm_i[N_p][R_p][C_p];
     shortreal weights_i[M_p][N_p][K_p][K_p];
@@ -28,8 +28,8 @@ module cnn_testbench ();
         end
     end
 
-    cnn #(.N_p( 4 ), .M_p( 4 ), .K_p( 2 ), .R_p( 16 )
-        ,.C_p( 16 ), .S_p( 1 ), .Tn_p ( 2 ), .Tm_p( 2 ) )
+    cnn #(.N_p( N_p ), .M_p( M_p ), .K_p( K_p ), .R_p( R_p )
+        ,.C_p( C_p ), .S_p( S_p ), .Tn_p ( Tn_p ), .Tm_p( Tm_p ) )
         dut
         (fm_i
         ,weights_i
