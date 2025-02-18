@@ -2,7 +2,7 @@
 // TODO: add stride
 // TODO: change output type from int to logic vector
 
-module cnn_counter #(parameter max_p= 4) 
+module cnn_counter #(parameter max_p= 4, parameter stride_p = 1) 
     (input logic reset_i
     ,input logic clk_i
     ,input logic en_i
@@ -25,7 +25,7 @@ module cnn_counter #(parameter max_p= 4)
             end
             else begin
                 pulse_n = 0;
-                it_n = it_o + 1;
+                it_n = it_o + stride_p;
             end
         end
     end

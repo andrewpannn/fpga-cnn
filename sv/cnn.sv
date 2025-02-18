@@ -17,9 +17,11 @@ module cnn
     // ******** CONTROL ********
     // instantiate iterator counters
     int row, col;
+    int to, ti;
     int i, j;
-    logic pulse_j, pulse_i, pulse_col, pulse_row;
-    cnn_counter (.max_p( K_p ))
+    logic pulse_j, pulse_i, pulse_ti, pulse_to, pulse_col, pulse_row;
+
+    cnn_counter (.max_p( K_p ), .stride_p ( 1 ))
         j_counter
         (.reset_i(reset_i)
         ,.clk_i(clk_i)
@@ -28,7 +30,7 @@ module cnn
         ,.it_o(j)
         );
     
-    cnn_counter (.max_p( K_p ))
+    cnn_counter (.max_p( K_p ), .stride_p ( 1 ))
         i_counter
         (.reset_i(reset_i)
         ,.clk_i(clk_i)
@@ -37,16 +39,34 @@ module cnn
         ,.it_o(i)
         );
     
-    cnn_counter (.max_p( K_p ))
-        col_counter
+    cnn_counter (.max_p( N_p ), .stride_p ( Tn_p ))
+        ti_counter
         (.reset_i(reset_i)
         ,.clk_i(clk_i)
         ,.en_i(pulse_i)
+        ,.pulse_o(pulse_ti)
+        ,.it_o(i)
+        )
+    
+    cnn_counter (.max_p( M_p ), .stride_p ( Tm_p ))
+        to_counter
+        (.reset_i(reset_i)
+        ,.clk_i(clk_i)
+        ,.en_i(pulse_ti)
+        ,.pulse_o(pulse_to)
+        ,.it_o(i)
+        )
+    
+    cnn_counter (.max_p( C_p ), .stride_p ( 1 ))
+        col_counter
+        (.reset_i(reset_i)
+        ,.clk_i(clk_i)
+        ,.en_i(pulse_to)
         ,.pulse_o(pulse_col)
         ,.it_o(col)
         );
     
-    cnn_counter (.max_p( K_p ))
+    cnn_counter (.max_p( R_p ), .stride_p ( 1 ))
         row_counter
         (.reset_i(reset_i)
         ,.clk_i(clk_i)
@@ -58,12 +78,11 @@ module cnn
     // ******** DATAPATH ********
     shortreal weights_lo[Tm_p][Tn_p]; // fed into outloop
     shortreal fm_lo[Tn_p]; 
-
-    assign fm_lo[0] = {tii, tii+1, tii+2, tii+3};
-    assign fm_lo[1]
+    shortreal fm_reg_o[Tm_p][R_p][C_p];
+    shortreal fm_reg_n[Tm_p]; // output from loop module
 
     // generate vector for fm_lo
-    genvar k
+    genvar k;
     generate
         for (k = 0; k < Tn_p) begin
             assign fm_lo[k] = fm_i[k][i][k];
@@ -71,11 +90,41 @@ module cnn
     endgenerate
 
     // generate vector for weights_lo
+    /*
+    genvar x;
+    generate
+        for (x = 0; x < Tm_p; x++) begin
+            for (int y = 0; y < Tn_p; y++) begin
+                assign weights_lo[x][y] = weights_i[x][y][i][j];
+            end
+        end
+    endgenerate
+    */
 
-    module #(.Tm_p( Tm_p ), Tn_p( Tn_p ))
+    output_loop #(.Tm_p( Tm_p ), Tn_p( Tn_p ))
         loop 
-        (.weights_i
-        ,.fm_i)
+        (.weights_i( weights_lo )
+        ,.fm_i( fm_lo )
+        ,.fm_init_i ( '{default:0} )
+        ,.fm_o ( fm_reg_n )
+        );
 
+    // store output in reg
+    always_ff @( clk_i ) begin
+        if (reset_i) begin
+            fm_reg_o <= '{default:0};
+        end
+    end
+    // update corresponding output fm
+    genvar z;
+    generate
+        for (z = 0; z < Tm_p; z++) begin
+            always_ff @( clk_i) begin
+                fm_reg_o[z][row][col] <= fm_reg_n[z];
+            end
+        end
+    endgenerate
+    
+    assign fm_o = fm_reg_o;
 
 endmodule
