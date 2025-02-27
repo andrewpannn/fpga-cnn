@@ -21,13 +21,13 @@ module cnn
     int to, ti;
     int i, j;
     logic pulse_j, pulse_i, pulse_ti, pulse_to, pulse_col, pulse_row;
-    logic done;
+    logic busy;
 
     cnn_counter #(.max_p( K_p ), .stride_p ( 1 ))
         j_counter
         (.reset_i(reset_i)
         ,.clk_i(clk_i)
-        ,.en_i(( ~reset_i ) & ( ~done ))
+        ,.en_i(( ~reset_i ) & ( busy ))
         ,.pulse_o(pulse_j)
         ,.it_o(j)
         );
@@ -93,7 +93,7 @@ module cnn
         endcase
     end
 
-    assign done = (state_p == eDONE);
+    assign busy = (state_p == eBUSY);
 
     // store state for state machine, reset to eWAIT
     always_ff @(posedge clk_i) begin
