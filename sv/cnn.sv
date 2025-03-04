@@ -17,69 +17,32 @@ module cnn
 
     // ******** CONTROL ********
     // instantiate iterator counters
-    int row, col;
-    int to, ti;
-    int i, j;
-    logic pulse_j, pulse_i, pulse_ti, pulse_to, pulse_col, pulse_row;
+    logic [$clog2( K_p )-1 : 0] j_lo, i_lo;
+    logic [$clog2( N_p )-1 : 0] ti_lo;
+    logic [$clog2( M_p )-1 : 0] to_lo;
+    logic [$clog2( C_p )-1 : 0] col_lo;
+    logic [$clog2( K_p )-1 : 0] row_lo;
+
+    logic counter_done_lo
     logic busy;
 
-    cnn_counter #(.max_p( K_p ), .stride_p ( 1 ))
-        j_counter
-        (.reset_i(reset_i)
-        ,.clk_i(clk_i)
-        ,.en_i(( ~reset_i ) & ( busy ))
-        ,.pulse_o(pulse_j)
-        ,.it_o(j)
+    iterator 
+        #(.N_p(N_p), .M_p(M_p), .K_p(K_p), .R_p(R_p), .C_p(C_p))
+        itr
+        (.clk_i(clk_i)
+        ,.reset_i(reset_i)
+        ,.busy_i(busy)
+        ,.j_o(j_lo)
+        ,.i_o(i_lo)
+        ,.ti_o(ti_lo)
+        ,.to_o(to_lo)
+        ,.col_o(col_lo)
+        ,.row_o(row_lo)
         );
-    
-    cnn_counter #(.max_p( K_p ), .stride_p ( 1 ))
-        i_counter
-        (.reset_i(reset_i)
-        ,.clk_i(clk_i)
-        ,.en_i(pulse_j)
-        ,.pulse_o(pulse_i)
-        ,.it_o(i)
-        );
-    
-    cnn_counter #(.max_p( N_p ), .stride_p ( Tn_p ))
-        ti_counter
-        (.reset_i(reset_i)
-        ,.clk_i(clk_i)
-        ,.en_i(pulse_i)
-        ,.pulse_o(pulse_ti)
-        ,.it_o(ti)
-        );
-    
-    cnn_counter #(.max_p( M_p ), .stride_p ( Tm_p ))
-        to_counter
-        (.reset_i(reset_i)
-        ,.clk_i(clk_i)
-        ,.en_i(pulse_ti)
-        ,.pulse_o(pulse_to)
-        ,.it_o(to)
-        );
-    
-    cnn_counter #(.max_p( C_p ), .stride_p ( 1 ))
-        col_counter
-        (.reset_i(reset_i)
-        ,.clk_i(clk_i)
-        ,.en_i(pulse_to)
-        ,.pulse_o(pulse_col)
-        ,.it_o(col)
-        );
-    
-    cnn_counter #(.max_p( R_p ), .stride_p ( 1 ))
-        row_counter
-        (.reset_i(reset_i)
-        ,.clk_i(clk_i)
-        ,.en_i(pulse_col)
-        ,.pulse_o(pulse_row)
-        ,.it_o(row)
-        );
-
+        
     // FSM for state control
     // TODO: change typedef
-    typedef enum {eWAIT, eBUSY, eDONE} state_e;
+    typedef enum [1:0] {eWAIT, eBUSY, eDONE} state_e;
     state_e state_p, state_n;
 
     // next state logic
@@ -112,7 +75,7 @@ module cnn
     genvar k;
     generate
         for (k = 0; k < Tn_p; k++) begin
-            assign fm_lo[k] = fm_i[k][i][k];
+            assign fm_lo[k] = fm_i[k][i_lo][k];
         end
     endgenerate
 
@@ -121,14 +84,14 @@ module cnn
     genvar x;
     generate
         for (x = 0; x < Tn_p; x++) begin
-            assign weights_lo[0][x] = weights_i[0][x][i][j];
+            assign weights_lo[0][x] = weights_i[0][x][i_lo][j_lo];
         end
     endgenerate
 
     genvar y;
     generate
         for (y = 0; y < Tn_p; y++) begin
-            assign weights_lo[1][y] = weights_i[1][y][i][j];
+            assign weights_lo[1][y] = weights_i[1][y][i_lo][j_lo];
         end
     endgenerate
 
@@ -160,7 +123,7 @@ module cnn
     generate
         for (z = 0; z < Tm_p; z++) begin
             always_ff @( clk_i) begin
-                fm_o[to + z][row][col] <= fm_reg_n[z] + fm_o[to + z][row][col];
+                fm_o[to + z][row_lo][col_lo] <= fm_reg_n[z] + fm_o[to + z][row_lo][col_lo];
             end
         end
     endgenerate

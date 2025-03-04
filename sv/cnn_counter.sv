@@ -7,7 +7,7 @@ module cnn_counter #(parameter max_p= 4, parameter stride_p = 1)
     ,input logic clk_i
     ,input logic en_i
     ,output logic pulse_o
-    ,output int it_o
+    ,output logic [$clog2( max_p )-1 : 0] it_o
     );
 
     int it_n;
