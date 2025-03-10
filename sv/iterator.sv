@@ -1,7 +1,8 @@
 // manages iterators for cnn.sv
 module iterator 
     #(parameter N_p=4, parameter M_p=4, parameter K_p=2
-    ,parameter R_p=16, parameter C_p=16
+    ,parameter R_p=16, parameter C_p=16, parameter Tn_p=2
+    ,parameter Tm_p=2 
     )
 
     (input logic clk_i
@@ -12,7 +13,7 @@ module iterator
     ,output logic [$clog2( N_p )-1 : 0] ti_o
     ,output logic [$clog2( M_p )-1 : 0] to_o
     ,output logic [$clog2( C_p )-1 : 0] col_o
-    ,output logic [$clog2( K_p )-1 : 0] row_o
+    ,output logic [$clog2( R_p )-1 : 0] row_o
     ,output logic done_o
     );
 
