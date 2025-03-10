@@ -1,3 +1,10 @@
+// Andrew Pan
+// EE 538D
+// reads memfiles to initialize matrices for cnn
+// acts as a ROM for system to use
+// utilizes IEEE 754 (float in C, shortreal in SV)
+// transform N x 32 inputs to appropriately sized shortreal matrices
+
 module mem
     #(parameter N_p=4, parameter M_p=4, parameter K_p=2
     ,parameter R_p=16, parameter C_p=16
