@@ -4,8 +4,10 @@ module cnn_testbench ();
     shortreal fm_i[N_p][R_p][C_p];
     shortreal weights_i[M_p][N_p][K_p][K_p];
     shortreal fm_o[M_p][R_p][C_p];
+    shortreal output_final[M_p][R_p][C_p];
     logic clk_i, reset_i, valid_i;
 
+    /*
     initial begin
         for (int i = 0; i < N_p; i++) begin
             for (int j = 0; j < R_p; j++) begin
@@ -27,6 +29,15 @@ module cnn_testbench ();
             end
         end
     end
+    */
+
+    // initialize mem
+    mem #(.N_p( N_p ), .M_p( M_p ), .K_p( K_p ), .R_p( R_p ), .C_p( C_p ))
+        cnn_mem
+        (.input_fm_o( fm_i )
+        ,.weights_o( weights_i )
+        ,.output_fm_o( output_final )
+        );
 
     cnn #(.N_p( N_p ), .M_p( M_p ), .K_p( K_p ), .R_p( R_p )
         ,.C_p( C_p ), .S_p( S_p ), .Tn_p ( Tn_p ), .Tm_p( Tm_p ) )
@@ -55,6 +66,7 @@ module cnn_testbench ();
         valid_i <= 0; @(posedge clk_i);
         repeat(300) @(posedge clk_i);
         $stop;
-
+        assert (fm_o[0][0][0] == output_final[0][0][0]) $display("output fm match") 
+        else                                            $display("output fm does not match")
     end
 endmodule
