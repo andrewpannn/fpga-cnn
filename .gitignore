@@ -1,2 +1,4 @@
 # ignore dat files
-.dat
+*.wlf
+*wlft*
+sv/work/

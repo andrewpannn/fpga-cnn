@@ -65,8 +65,8 @@ module cnn_testbench ();
         valid_i <= 1; @(posedge clk_i);
         valid_i <= 0; @(posedge clk_i);
         repeat(300) @(posedge clk_i);
+        assert (fm_o[0][0][0] == output_final[0][0][0]) $display("output fm match");
+        else                                            $display("output fm does not match");
         $stop;
-        assert (fm_o[0][0][0] == output_final[0][0][0]) $display("output fm match") 
-        else                                            $display("output fm does not match")
     end
 endmodule
