@@ -42,7 +42,6 @@ module cnn
         );
         
     // FSM for state control
-    // TODO: change typedef
     typedef enum logic[1:0] {eWAIT, eBUSY, eDONE} state_e;
     state_e state_p, state_n;
 
@@ -83,9 +82,12 @@ module cnn
     // generate vector for weights_lo
     // hardcode for now TODO: fix
     genvar x;
+    genvar y;
     generate
-        for (x = 0; x < Tn_p; x++) begin
-            assign weights_lo[0][x] = weights_i[0][x][i_lo][j_lo];
+        for (x = 0; x < Tm_p; x++) begin
+            for (y = 0; y < Tn_p; y++) begin
+                assign weights_lo[x][y] = weights_i[x][y][i_lo][j_lo];
+            end
         end
     endgenerate
 
