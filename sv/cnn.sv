@@ -80,7 +80,6 @@ module cnn
     endgenerate
 
     // generate vector for weights_lo
-    // hardcode for now TODO: fix
     genvar x;
     genvar y;
     generate
