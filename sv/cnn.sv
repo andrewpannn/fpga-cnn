@@ -90,20 +90,18 @@ module cnn
         end
     endgenerate
 
-    genvar y;
+   /*  genvar y;
     generate
         for (y = 0; y < Tn_p; y++) begin
             assign weights_lo[1][y] = weights_i[1][y][i_lo][j_lo];
         end
-    endgenerate
-
-    shortreal init_test[2] = {0, 0};
+    endgenerate*/
 
     output_loop #(.Tm_p( Tm_p ), .Tn_p( Tn_p ))
         loop 
         (.weights_i( weights_lo )
         ,.fm_i( fm_i_lo )
-        ,.fm_init_i ( init_test )
+        ,.fm_init_i ( '0 )
         ,.fm_o ( fm_reg_n )
         );
 
