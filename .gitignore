@@ -2,3 +2,5 @@
 *.wlf
 *wlft*
 sv/work/
+*.dat
+*.test
