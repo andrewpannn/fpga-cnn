@@ -1,5 +1,5 @@
 module cnn_testbench ();
-    parameter N_p=1, M_p=1, K_p=3, R_p=4, C_p=4, S_p=1, Tn_p=1, Tm_p=1;
+    parameter N_p=1, M_p=1, K_p=1, R_p=4, C_p=4, S_p=1, Tn_p=1, Tm_p=1;
 
     shortreal fm_i[N_p][R_p][C_p];
     shortreal weights_i[M_p][N_p][K_p][K_p];
