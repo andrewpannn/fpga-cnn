@@ -65,8 +65,16 @@ module cnn_testbench ();
         valid_i <= 1; @(posedge clk_i);
         valid_i <= 0; @(posedge clk_i);
         repeat(300) @(posedge clk_i);
-        assert ( (fm_o[0][0][0] < (output_final[0][0][0] * 1.01)) | (fm_o[0][0][0] > (output_final[0][0][0] * 0.99)) ) $display("output fm match");
-        else                                            $display("output fm does not match");
+        // check output values match python script
+        for ( int i = 0; i < M_p; i++ ) begin
+            for ( int j = 0; j < R_p; j ++) begin
+                for ( int k = 0; k < C_p; k++ ) begin
+                    assert ( (fm_o[i][j][k] < (output_final[0][0][0] * 1.01)) | (fm_o[0][0][0] > (output_final[0][0][0] * 0.99)) ) $display("output fm[%0d][%0d][%0d] match", i, j, k);
+                    else                                            $display("output fm[%0d][%0d][%0d] does not match", i, j, k);
+                end
+            end
+        end
+
         $stop;
     end
 endmodule
